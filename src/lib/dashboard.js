@@ -147,11 +147,11 @@ export function initDashboard() {
  function renderTimeline(totals) {
   const host = $('timeline-chart'), width = Math.max(320, host.clientWidth - 30), height = host.clientHeight || 305;
   const margin = {left:48,right:23,top:52,bottom:36}, pw = width-margin.left-margin.right, ph = height-margin.top-margin.bottom;
-  let start = state.zoom ? 16*60 : 8*60, end = state.zoom ? 20*60 : 20*60;
+  let start = state.zoom ? 17*60 : 8*60, end = state.zoom ? 19*60 : 20*60;
   const occupied = totals.histogram.map((v,i) => v ? i*5 : null).filter((v) => v !== null);
   if (!state.zoom && occupied.length) { start=Math.max(0,Math.min(8*60,Math.floor(occupied[0]/60)*60)); end=Math.min(1440,Math.max(20*60,Math.ceil((occupied[occupied.length-1]+5)/60)*60)); }
   const step=state.interval, bins=[];
-  let cumulative=totals.histogram.slice(0,start/5).reduce((a,b)=>a+b,0);
+  let cumulative=state.zoom?0:totals.histogram.slice(0,start/5).reduce((a,b)=>a+b,0);
   for(let minute=start;minute<end;minute+=step) {
    const volume=totals.histogram.slice(minute/5,Math.min(288,(minute+step)/5)).reduce((a,b)=>a+b,0);
    cumulative+=volume;bins.push({minute,volume,value:state.chart==='cumulative'?cumulative:volume});
@@ -181,7 +181,7 @@ export function initDashboard() {
   if(!occupied.length)svg+='<text x="'+(margin.left+pw/2)+'" y="'+(margin.top+ph/2)+'" text-anchor="middle" class="chart-empty">'+escape(t('noBallots'))+'</text>';
   host.innerHTML=svg+'</svg>';
   host.querySelectorAll('[data-bin]').forEach((el)=>{
-   el.addEventListener('pointermove',(event)=>{const b=bins[Number(el.dataset.bin)];showTooltip(event,'<strong>'+hour(b.minute)+'–'+hour(b.minute+step)+'</strong><div class="tip-line"><span>'+escape(t(state.chart==='cumulative'?'cumulative':'ballotsRecorded'))+'</span><b>'+fmt(b.value)+'</b></div><div class="tip-line"><span>Brasília · UTC−3</span></div>');});
+   el.addEventListener('pointermove',(event)=>{const b=bins[Number(el.dataset.bin)];showTooltip(event,'<strong>'+hour(b.minute)+'–'+hour(b.minute+step)+'</strong><div class="tip-line"><span>'+escape(t(state.chart==='cumulative'?(state.zoom?'cumulativeWindow':'cumulative'):'ballotsRecorded'))+'</span><b>'+fmt(b.value)+'</b></div><div class="tip-line"><span>Brasília · UTC−3</span></div>');});
    el.addEventListener('pointerleave',hideTooltip);
   });
  }
