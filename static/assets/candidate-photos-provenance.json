@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "fetched_at": "2026-10-26T10:01:30.063146+00:00",
+  "election": "6258",
+  "round": 2,
+  "candidate_metadata_url": "https://resultados.tse.jus.br/oficial/ele2026/6258/dados/br/br-c0001-e006258-u.json",
+  "candidate_metadata_sha256": "67fae708b0c7977fc9847d36100c63313621bff971178c48f2da99969707c263",
+  "photo_path_verified_against": "https://resultados.tse.jus.br/oficial/app/1563.f2451fddd1d8a5e9.js",
+  "description": "Original official TSE candidate photographs. No generation, appearance transformation or cropping applied.",
+  "photos": [
+    {
+      "candidate_number": "13",
+      "name": "LUIZ INÁCIO LULA DA SILVA",
+      "ballot_name": "LULA",
+      "candidate_id": "280002542548",
+      "official_votes": 64256232,
+      "official_vote_share": "51,79",
+      "file": "lula.jpg",
+      "source_url": "https://resultados.tse.jus.br/oficial/ele2026/6258/fotos/br/280002542548.jpeg",
+      "content_type": "image/jpeg",
+      "bytes": 6969,
+      "sha256": "f3e9d937a40bc8d56fec508a44943bd032b9f5e27ac09abdc610b0d2a333ab19"
+    },
+    {
+      "candidate_number": "22",
+      "name": "FLAVIO NANTES BOLSONARO",
+      "ballot_name": "FLAVIO BOLSONARO",
+      "candidate_id": "280002551544",
+      "official_votes": 59826041,
+      "official_vote_share": "48,21",
+      "file": "flavio-bolsonaro.jpg",
+      "source_url": "https://resultados.tse.jus.br/oficial/ele2026/6258/fotos/br/280002551544.jpeg",
+      "content_type": "image/jpeg",
+      "bytes": 6753,
+      "sha256": "3f29c4846e3839944a2668cc4b663c1ca2b90fef846314f8fd4434a031d0a917"
+    }
+  ]
+}
