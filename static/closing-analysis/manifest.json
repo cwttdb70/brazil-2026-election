@@ -1,0 +1,22 @@
+{
+  "summary.json": {
+    "bytes": 85091,
+    "sha256": "af5049fa144708b04d2cad3a51c7e1680c91c69b22018b8e3493f2682ccab92d"
+  },
+  "post-17-sections.csv.gz": {
+    "bytes": 3920297,
+    "sha256": "208bf9c1173dd6ddc8e27ff6c9eb618e2894f19d81d9d61e7711250675770aff"
+  },
+  "closed-at-or-after-19-sections.csv.gz": {
+    "bytes": 811183,
+    "sha256": "fb31f9aea1ac381f48a500c9cda4614b259d070054582dcd1b1dbf1b783fcba8"
+  },
+  "README.txt": {
+    "bytes": 7822,
+    "sha256": "a8b2f64a89d73bf55fe01dd76a1bc08ac9b1426b3159783fb76859288a9ed7e0"
+  },
+  "domestic-section-closings.csv.gz": {
+    "bytes": 57632911,
+    "sha256": "b024d7014cc34931b4668c00196374bb75158061c5162fc7bc35a6220eaf1c29"
+  }
+}
