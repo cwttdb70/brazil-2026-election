@@ -79,6 +79,15 @@ export function initDashboard() {
   document.querySelector('.language-switch').setAttribute('aria-label', isPt ? 'Idioma' : 'Language');
   $('previous-page').setAttribute('aria-label', isPt ? 'Página anterior' : 'Previous page');
   $('next-page').setAttribute('aria-label', isPt ? 'Próxima página' : 'Next page');
+  document.querySelector('.controls-section').setAttribute('aria-label',isPt?'Filtros geográficos':'Geographic filters');
+  document.querySelector('.election-results').setAttribute('aria-label',isPt?'Resultado nacional oficial':'Official national results');
+  document.querySelector('.ballot-composition').setAttribute('aria-label',isPt?'Composição de todos os votos oficiais':'Composition of all official ballots');
+  document.querySelector('.chart-controls .segmented').setAttribute('aria-label',isPt?'Tipo de gráfico':'Chart type');
+  document.querySelector('.table-tabs').setAttribute('aria-label',isPt?'Detalhamento geográfico':'Geographic detail');
+  $('table-search').setAttribute('aria-label',t('searchPlaces'));
+  $('timeline-chart').setAttribute('aria-label',t('timelineTitle'));
+  document.querySelector('label[for=interval-filter]').textContent=isPt?'Intervalo do gráfico':'Chart interval';
+  $('copy-command').setAttribute('aria-label',t('copyCommand'));
   $('map-reset').title = isPt ? 'Limpar seleção do mapa' : 'Reset map selection';
   $('map-reset').setAttribute('aria-label', $('map-reset').title);
   const brand=document.querySelector('.brand>span');if(brand?.firstChild)brand.firstChild.textContent=isPt?'BRASIL ':'BRAZIL ';
@@ -96,14 +105,14 @@ export function initDashboard() {
   const regionIds = new Set(scopeRows.map((r) => r.region));
   options($('region-filter'), REGIONS.filter((id) => regionIds.has(id)).map((id) => [id, regionName(id)]), state.region, t('allRegions'));
   const states = data.states.filter((s) => matchesScope(s) && (!state.region || s.region === state.region)).sort((a,b) => a.name.localeCompare(b.name, locale()));
-  options($('state-filter'), states.map((s) => [s.uf, cleanName(s.name)]), state.uf, t('allStates'));
+  options($('state-filter'), states.map((s) => [s.uf, s.uf==='ZZ'?t('overseas'):cleanName(s.name)]), state.uf, t('allStates'));
   const cities = scopeRows.filter((r) => (!state.region || r.region === state.region) && (!state.uf || r.uf === state.uf)).sort((a,b) => a.name.localeCompare(b.name, locale()));
   options($('city-filter'), cities.map((c) => [c.id, cleanName(c.name) + ' · ' + c.uf]), state.city, t('allCities'));
   $('scope-filter').value = state.scope;
  }
  function selectionName() {
   if (state.city) { const c = data.municipalities.find((r) => r.id === state.city); return cleanName(c.name) + ' · ' + c.uf; }
-  if (state.uf) return cleanName(data.states.find((r) => r.uf === state.uf)?.name || state.uf);
+  if (state.uf) return state.uf==='ZZ'?t('overseas'):cleanName(data.states.find((r) => r.uf === state.uf)?.name || state.uf);
   if (state.region) return regionName(state.region);
   return t(state.scope === 'all' ? 'worldwideLabel' : state.scope === 'overseas' ? 'overseas' : 'brazil');
  }
@@ -233,7 +242,7 @@ export function initDashboard() {
   visibleTableRows=rows;
   const pageSize=12,pages=Math.max(1,Math.ceil(rows.length/pageSize));state.page=Math.min(state.page,pages-1);
   const start=state.page*pageSize,pageRows=rows.slice(start,start+pageSize);
-  $('detail-table').innerHTML=pageRows.map((r)=>'<tr><td><button class="table-place" data-place="'+escape(state.table==='states'?r.uf:r.id)+'">'+escape(cleanName(r.name))+'</button>'+(state.table==='municipalities'?'<span class="place-uf">'+escape(r.uf)+'</span>':'')+'</td><td class="cell-total">'+fmt(r.total)+'</td><td>'+fmt(r.before17)+'</td><td class="extension-column">'+fmt(r.between17and19)+'<span class="cell-sub">'+percent(r.between17and19,r.total)+'</span></td><td>'+fmt(r.after19)+'</td><td>'+fmt(r.unclassified)+'</td><td><span class="coverage-cell">'+percent(r.analyzedSections,r.expectedSections)+'<i><span style="width:'+Math.min(100,r.expectedSections?r.analyzedSections/r.expectedSections*100:0)+'%"></span></i></span></td></tr>').join('')||'<tr><td colspan="7" class="empty-row">'+escape(t('noResults'))+'</td></tr>';
+  $('detail-table').innerHTML=pageRows.map((r)=>'<tr><td><button class="table-place" data-place="'+escape(state.table==='states'?r.uf:r.id)+'">'+escape(r.uf==='ZZ'?t('overseas'):cleanName(r.name))+'</button>'+(state.table==='municipalities'?'<span class="place-uf">'+escape(r.uf)+'</span>':'')+'</td><td class="cell-total">'+fmt(r.total)+'</td><td>'+fmt(r.before17)+'</td><td class="extension-column">'+fmt(r.between17and19)+'<span class="cell-sub">'+percent(r.between17and19,r.total)+'</span></td><td>'+fmt(r.after19)+'</td><td>'+fmt(r.unclassified)+'</td><td><span class="coverage-cell">'+percent(r.analyzedSections,r.expectedSections)+'<i><span style="width:'+Math.min(100,r.expectedSections?r.analyzedSections/r.expectedSections*100:0)+'%"></span></i></span></td></tr>').join('')||'<tr><td colspan="7" class="empty-row">'+escape(t('noResults'))+'</td></tr>';
   $('detail-table').querySelectorAll('[data-place]').forEach((el)=>el.addEventListener('click',()=>{
    if(state.table==='states'){state.uf=el.dataset.place;state.city='';}
    else{const r=data.municipalities.find((m)=>m.id===el.dataset.place);state.city=r.id;state.uf=r.uf;state.region=r.region;}
